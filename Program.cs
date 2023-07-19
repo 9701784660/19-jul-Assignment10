@@ -3,130 +3,111 @@ using System.IO;
 
 namespace _19_7_Assignment_10
 {
-    public class operations
+   internal class Program
     {
-
-        public static void create()
+        public static void createFile()
         {
-            string path = "D:\\";
-            Console.WriteLine("Enter File name");
-            string fname = Console.ReadLine();
-            string fpath = path + fname;
-
-            if (File.Exists(fpath))
+            Console.WriteLine("Enter the Path for the new file");
+            string fpath = Console.ReadLine();
+            Console.WriteLine("Enter the New File's name");
+            string name = Console.ReadLine();
+            string thePath = fpath + name;
+            if (File.Exists(thePath))
             {
-
-                Console.WriteLine("file already exis");
+                Console.WriteLine("The File Already Exists");
             }
             else
             {
-                // string result = " Go Ahead file created";
-                File.Create(fpath);
-                Console.WriteLine(fpath);
-
-                Console.WriteLine("file created ");
-
+                StreamWriter sw = File.AppendText(thePath);
+                sw.WriteLine("This is Assignment No : 10");
+                sw.WriteLine("Topic : File Handling");
+                sw.Dispose();
+                sw.Close();
+                Console.WriteLine("Now the File is Created in the Directory");
             }
-
-
         }
-        public static void Read()
+        public static void readFiles()
         {
-            StreamReader sr;
-            Console.WriteLine("enter file path to read");
-            string fpath = Console.ReadLine();
-            sr = new StreamReader(fpath);
+            Console.WriteLine("Enter the File name and its Path to read");
+            string readFile = Console.ReadLine();
+            StreamReader sr = new StreamReader(readFile);
             string text = "";
             while ((text = sr.ReadLine()) != null)
             {
                 Console.WriteLine(text);
             }
             sr.Close();
-
         }
-        public static void append()
+        public static void appendFiles()
         {
-            Console.WriteLine("enter file path");
-            string fpath = Console.ReadLine();
-            if (File.Exists(fpath))
-            {
-
-                StreamWriter sw = File.AppendText(fpath);
-                Console.WriteLine("enter line you want to append");
-                sw.WriteLine(Console.ReadLine());
-                sw.Dispose();
-                sw.Close();
-                Console.WriteLine("Text Appended");
-            }
-            else
-            {
-                Console.WriteLine("the file is not exist");
-            }
+            Console.WriteLine("Enter the Path for the file to Open");
+            string openFile = Console.ReadLine();
+            Console.WriteLine("Enter the Content to Append");
+            string appendFile = Console.ReadLine();
+            File.AppendAllText(openFile, appendFile);
         }
-        public static void delete()
+        public static void deleteFiles()
         {
-            Console.WriteLine("enter path");
-            string path = Console.ReadLine();
-            Console.WriteLine("file name to Delete");
-            string fname = Console.ReadLine();
-            string fpath = path + fname;
-            if (File.Exists(fpath))
-            {
-                File.Delete(fpath);
-                Console.WriteLine("file deleted successfully");
-            }
-            else
-            {
-                Console.WriteLine("file not exist");
-            }
-
-
-
+            Console.WriteLine("Enter the Path for the file to Delete");
+            string deleteFile = Console.ReadLine();
+            File.Delete(deleteFile);
+            Console.WriteLine("The File is Deleted from the Directory");
         }
-    }
-    internal class Program
-    {
         static void Main(string[] args)
         {
-        repeat:
-            Console.WriteLine("Enter Your Choice ");
-            Console.WriteLine("Enter 1 for File Creation\nEnter 2 for File Read\nEnter 3 for File Append\nEnter 4 for File Delete");
-            int ex = int.Parse(Console.ReadLine());
-
-            switch (ex)
+        again:
+            try
             {
-                case 1:
-                    operations.create();
-                    break;
-                case 2:
-                    operations op = new operations();
-                    operations.Read();
-                    break;
-                case 3:
+                Console.WriteLine("Choose the File Operation to Perform");
+                Console.WriteLine("1. File Creation \n2. File Reading \n3. File Appending \n4. File Deletion");
+                Console.WriteLine("Enter the operation number");
+                int selection = int.Parse(Console.ReadLine());
+                switch (selection)
+                {
+                    case 1:
+                        {
+                            createFile();
+                            break;
+                        }
+                    case 2:
+                        {
+                            readFiles();
+                            break;
+                        }
+                    case 3:
+                        {
+                            appendFiles();
+                            break;
+                        }
+                    case 4:
+                        {
+                            deleteFiles();
+                            break;
+                        }
+                    default:
+                        {
+                            Console.WriteLine("Wrong Choice");
+                            break;
+                        }
 
-                    operations.append();
-                    break;
-                case 4:
-
-                    operations.delete();
-                    break;
-
-                default:
-                    Console.WriteLine("Choice not found");
-                    break;
-
+                }
+                Console.WriteLine("\n\n");
+                Console.WriteLine("Do you want to Continue?\n1.Yes\t2.No");
+                int opt = int.Parse(Console.ReadLine());
+                if (opt == 1)
+                {
+                    goto again;
+                }
             }
-            Console.WriteLine("would you like to continue if yes press y for no press any key");
-            var cont = Console.ReadLine();
-            if (cont == "y")
+            catch (Exception ex)
             {
-                goto repeat;
+                Console.WriteLine(ex.Message);
             }
-            else
+            finally
             {
-                Console.WriteLine("thank you for using my code");
-                Console.ReadKey();
+                Console.WriteLine("End of the Program");
             }
-        }
-    }
+
+        }
+    }
 }
